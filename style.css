@@ -12,5 +12,22 @@ body {
     height: 100vh;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+    gap: 10px;
     /* background-color: aqua; */
+}
+
+.longterm {
+    background-color: aqua;
+}
+
+.shortterm {
+    background-color: blue;
+}
+
+.thoughts {
+    background-color: green;
+}
+
+.completed {
+    background-color: yellow;
 }
