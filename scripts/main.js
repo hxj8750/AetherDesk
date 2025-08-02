@@ -1,4 +1,4 @@
-console.log("main.js is running!"); 
+// console.log("main.js is running!"); 
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -9,23 +9,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 遍历每一个面板，为它们绑定双击事件
     quadrants.forEach(quad => {
-        quad.addEventListener('dblclick', () => {
-            
-            // 检查当前是否已经有面板处于焦点状态
-            const isAlreadyFocused = quad.classList.contains('is-focused');
-
-            // 在做任何操作前，先把所有面板的 is-focused 类都去掉
-            quadrants.forEach(q => q.classList.remove('is-focused'));
-
-            if (isAlreadyFocused) {
-                // 如果当前面板已经是焦点，说明想退出焦点模式
-                container.classList.remove('focused-mode');
-            } else {
-                // 如果当前面板不是焦点，说明想进入焦点模式
-                quad.classList.add('is-focused'); // 给被双击的面板加上焦点类
-                container.classList.add('focused-mode'); // 切换容器到焦点模式
+        let clickTimeout = null; // 用一个变量来存储定时器
+        let clickCount = 0;   // 记录点击次数
+    
+        quad.addEventListener('click', () => {
+            clickCount++; // 每次点击，计数器加1
+    
+            if (clickCount === 1) {
+                // 如果是第一次点击，启动一个定时器
+                clickTimeout = setTimeout(() => {
+                    // 如果 300 毫秒内没有第二次点击，就重置计数器
+                    // 这里可以处理单击事件（如果需要的话）
+                    clickCount = 0;
+                }, 300); // 300毫秒是一个比较常见的双击时间间隔
+            } else if (clickCount === 2) {
+                // 如果是第二次点击
+                clearTimeout(clickTimeout); // 清除掉之前的定时器
+                clickCount = 0; // 重置计数器
+    
+                // ----- 在这里执行你的双击逻辑！-----
+                console.log(quad.dataset.title + ' was double-clicked (simulated)!');
+    
+                const isAlreadyFocused = quad.classList.contains('is-focused');
+                quadrants.forEach(q => q.classList.remove('is-focused'));
+    
+                if (isAlreadyFocused) {
+                    container.classList.remove('focused-mode');
+                } else {
+                    quad.classList.add('is-focused');
+                    container.classList.add('focused-mode');
+                }
+                // ------------------------------------
             }
         });
     });
-
 });
