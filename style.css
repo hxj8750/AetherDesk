@@ -2,9 +2,14 @@
     box-sizing: border-box;
 }
 
-
 body {
     margin: 0;
+    background: #232526;
+    background: -webkit-linear-gradient(to right, #414345, #232526); 
+    background: linear-gradient(to right, #414345, #232526);
+
+    font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+    color: #f0f0f0;
 }
 
 .container {
@@ -12,11 +17,27 @@ body {
     height: 100vh;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: 10px;
-    /* background-color: aqua; */
+    gap: 15px;
+    padding: 15px;
+    
 }
 
-.longterm {
+.longterm, .shortterm, .thoughts, .completed {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border-radius: 12px;
+    padding: 20px;
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+
+/* .longterm {
     background-color: aqua;
 }
 
@@ -30,4 +51,8 @@ body {
 
 .completed {
     background-color: yellow;
+} */
+
+.longterm:hover, .shortterm:hover, .thoughts:hover, .completed:hover {
+    background-color: rgba(255, 0, 0, 0.3); 
 }
