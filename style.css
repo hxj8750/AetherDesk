@@ -33,6 +33,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 
     transition: background-color 0.3s ease-in-out;
+    transition: all 0.4s cubic-bezier(0.25,0.8,0.25,1);
 
     position: relative;
     overflow: hidden;
@@ -54,6 +55,30 @@ body {
     white-space: nowrap;
 }
 
-.longterm:hover, .shortterm:hover, .thoughts:hover, .completed:hover {
-    background-color: rgba(255, 0, 0, 0.3); 
+.container:not(.focused-mode) .longterm:hover,
+.container:not(.focused-mode) .shortterm:hover,
+.container:not(.focused-mode) .thoughts:hover,
+.container:not(.focused-mode) .completed:hover {
+    background-color: rgba(255,0,0,0.3); 
+    transform: translateY(-5px); /* 微微上浮 */
+}
+
+.container.focused-mode {
+    display:block;
+    padding:0;
+}
+
+.container.focused-mode .longterm,
+.container.focused-mode .shortterm,
+.container.focused-mode .thoughts,
+.container.focused-mode .completed {
+    display: none;
+}
+
+.container.focused-mode .is-focused {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    gap: 0;
 }
