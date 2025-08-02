@@ -18,12 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (clickCount === 1) {
                 // 如果是第一次点击，启动一个定时器
                 clickTimeout = setTimeout(() => {
-                    // 如果 300 毫秒内没有第二次点击，就重置计数器
-                    // 这里可以处理单击事件（如果需要的话）
                     clickCount = 0;
-                }, 300); // 300毫秒是一个比较常见的双击时间间隔
-            } else if (clickCount === 2) {
-                // 如果是第二次点击
+                }, 600); 
+            } else if (clickCount === 3) {
+                // 如果是第三次点击
                 clearTimeout(clickTimeout); // 清除掉之前的定时器
                 clickCount = 0; // 重置计数器
     
