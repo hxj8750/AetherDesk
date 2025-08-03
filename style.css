@@ -140,8 +140,44 @@ body {
 .container:not(.focused-mode) .shortterm:hover,
 .container:not(.focused-mode) .thoughts:hover,
 .container:not(.focused-mode) .completed:hover {
-    background-color: rgba(255,0,0,0.3); 
-    transform: translateY(-5px); /* 微微上浮 */
+    
+    /* 微微上浮效果 */
+    transform: translateY(-5px);
+    
+    /* 边框变亮 */
+    border-color: rgba(255, 255, 255, 0.5);
+
+    /* 叠加两个背景 */
+    background-size: 200% 100%, 100% 100%; /* 第一个给扫光用，第二个给金属底色用 */
+    background-position: -100% 0, 0 0; /* 扫光的初始位置在左边屏幕外 */
+    
+    background-image: 
+        /* 背景层1：扫光*/
+        linear-gradient(110deg, 
+            transparent 40%, 
+            rgba(255, 255, 255, 0.2) 50%, 
+            transparent 60%),
+        
+        /* 背景层2：金属质感底色 */
+        linear-gradient(to bottom, 
+            rgba(255, 255, 255, 0.15), 
+            rgba(255, 255, 255, 0.05));
+
+    /* 触发扫光动画 */
+    animation: metal-sweep 1s ease-out forwards;
+}
+
+@keyframes metal-sweep {
+    /* 动画开始*/
+    from {
+        background-position: -100% 0, 0 0;
+    }
+    
+    /* 动画结束 */
+    to {
+        /* 把扫光层移动到右边屏幕外 */
+        background-position: 100% 0, 0 0;
+    }
 }
 
 .container.focused-mode {
