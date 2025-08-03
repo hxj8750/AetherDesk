@@ -161,11 +161,54 @@ body {
     gap: 0;
 }
 
+.content-list {
+    display: flex;
+    flex-direction: column;
+}
+
 /* 这是每个内容框上条目的样式 */
 .goal-item {
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 12px 18px;
+    background-color: transparent; /* 背景透明，让它更融入 */
+    padding: 14px 18px;
     border-radius: 8px;
-    border-left: 4px solid #00aaff;
-    margin: 10px;
+    margin-bottom: 10px;
+    
+    display: flex; /* 使用 Flexbox 来对齐图标和文本 */
+    align-items: center;
+    gap: 12px;
+    
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.goal-item:hover {
+    background-color: rgba(255, 255, 255, 0.05); /* 悬停时整个条目有淡淡的背景 */
+}
+
+/* 用伪元素 ::before 来创建一个“复选框” */
+.goal-item::before {
+    content: ''; /* 内容为空，我们自己画 */
+    display: block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%; /* 圆形的复选框 */
+    flex-shrink: 0; /* 防止它被压缩 */
+    transition: all 0.2s ease;
+}
+
+.goal-item:hover::before {
+    border-color: #00aaff;
+}
+
+/* (未来功能) 当条目被标记为完成时，可以给它加一个 .completed-item 类 */
+.goal-item.is-completed {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through; /* 添加删除线 */
+}
+
+.goal-item.is-completed::before {
+    background-color: #00aaff;
+    border-color: #00aaff;
+    /* 可以在中间再加一个对勾图标 */
 }
