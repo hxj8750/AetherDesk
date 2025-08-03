@@ -160,3 +160,12 @@ body {
     border-radius: 0;
     gap: 0;
 }
+
+/* 这是每个内容框上条目的样式 */
+.goal-item {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 12px 18px;
+    border-radius: 8px;
+    border-left: 4px solid #00aaff;
+    margin: 10px;
+}
