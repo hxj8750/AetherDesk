@@ -43,10 +43,15 @@ body {
     gap: 10px;
 }
 
-.add-item-btn {
+.add-item-form {
     display: none;
+}
+
+.add-item-btn {
+    display: none; /*目前来看可以删掉 姑且保留*/
 
     width: 40%;
+    height: 44px;
     margin:auto;
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.05);
@@ -57,6 +62,15 @@ body {
     font-size: 1.5em;
     
     transition: all 0.2s ease;
+    transition: all 0.4s ease-in-out;
+}
+
+.add-item-input {
+    width: 0;
+    opacity: 0;
+    border: none;
+    padding: 0;
+
 }
 
 .add-item-btn:hover {
@@ -65,10 +79,42 @@ body {
     color: white;
 }
 
+.is-focused .add-item-form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
 .is-focused .add-item-btn {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* 当表单处于编辑状态时 展开输入框 */
+.add-item-form.is-editing .add-item-input {
+    flex-grow: 1;
+    background-color: rgba(0,0,0,0.2);
+    color: #f0f0f0;
+    border-radius: 8px;
+    font-size: 1em;
+
+    width: 100%;
+    opacity: 1;
+    padding: 10px 15px;
+    border: 2px solid #00aaff;
+
+    transition: all 0.4s ease-in-out;
+}
+
+/* 按钮收缩成圆形 */
+.add-item-form.is-editing .add-item-btn {
+    width: 44px;
+    border-radius: 50%;
+    border-style: solid;
+    background-color: #00aaff;
+
+    color: white;
 }
 
 .longterm::before, .shortterm::before, .thoughts::before, .completed::before {

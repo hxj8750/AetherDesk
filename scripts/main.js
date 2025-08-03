@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.container');
     const quadrants = document.querySelectorAll('.longterm, .shortterm, .thoughts, .completed');
 
-    // 遍历每一个面板，为它们绑定双击事件
     quadrants.forEach(quad => {
+        // 遍历每一个面板，为它们绑定三击事件
         let clickTimeout = null; // 用一个变量来存储定时器
         let clickCount = 0;   // 记录点击次数
     
@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearTimeout(clickTimeout); // 清除掉之前的定时器
                 clickCount = 0; // 重置计数器
     
-                // ----- 在这里执行你的双击逻辑！-----
                 console.log(quad.dataset.title + ' was double-clicked (simulated)!');
     
                 const isAlreadyFocused = quad.classList.contains('is-focused');
@@ -39,6 +38,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 // ------------------------------------
             }
+
         });
+
+        // 按下添加按钮后的逻辑
+        const addItemForm = quad.querySelector('.add-item-form');
+        const addBtn = quad.querySelector('.add-item-btn');
+        const addInput = quad.querySelector('.add-item-input');
+        const contentList = quad.querySelector('.content-list');
+
+        addBtn.addEventListener('click',()=>{
+            const isEditing = addItemForm.classList.contains('is-editing');
+
+            if (isEditing) {
+                // 这里先直接关闭编辑模式
+                addItemForm.classList.remove('is-editing');
+            } else {
+                //进入编辑模式
+                addItemForm.classList.add('is-editing');
+                addInput.focus();
+            }
+        })
+
+        //处理输入框失焦事件
+        addInput.addEventListener('blur',()=>{
+            if (addInput.value.trim()==='') {
+                addItemForm.classList.remove('is-editing');
+            }
+        })
+
+
+
     });
 });
