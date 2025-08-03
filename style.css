@@ -18,7 +18,10 @@ body {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     gap: 15px;
-    padding: 15px;
+
+    padding: 15vh 15vw;
+
+
     
 }
 
@@ -172,7 +175,7 @@ body {
     padding: 14px 18px;
     border-radius: 8px;
     margin-bottom: 10px;
-    
+
     display: flex; /* 使用 Flexbox 来对齐图标和文本 */
     align-items: center;
     gap: 12px;
