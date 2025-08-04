@@ -144,12 +144,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         clickedItem.classList.remove('is-deleting'); //移除血条动画
                         clickedItem.classList.add('is-disappearing'); //消失动画
 
-                        clickedItem.addEventListener('animationend',()=>{ // 动画结束后才删除数据
-                            if (!isNaN(itemIndex)) {
-                                deleteItem(quadrantKey, itemIndex, clickedItem);
-                            }
+                        if (!isNaN(itemIndex)) {
+                            deleteItem(quadrantKey, itemIndex, clickedItem);
+                        }
 
-                        })
+
                     } else {
                         // 第一次点击 进入待删除状态
                         // 先取消其它条目的待删除状态
