@@ -51,21 +51,38 @@ body {
 }
 
 .add-item-btn {
-    display: none; /*目前来看可以删掉 姑且保留*/
-
-    width: 40%;
-    height: 44px;
-    margin:auto;
-    padding: 10px;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 2px dashed rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    font-size: 1.5em;
+    /* 1. 布局与尺寸 */
+    display: flex;
+    align-items: center;
+    width: 100%; /* 默认状态下是长条形 */
+    height: 48px;
+    padding: 0 18px; /* 左右内边距 */
     
-    transition: all 0.2s ease;
-    transition: all 0.4s ease-in-out;
+    /* 2. 外观 (幽灵按钮风格) */
+    background-color: transparent; /* 背景完全透明 */
+    border: none; /* 移除所有边框 */
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.4); /* 文字颜色变淡 */
+    cursor: pointer;
+    text-align: left; /* 文字靠左 */
+
+    /* 3. 动画 */
+    transition: all 0.3s ease;
+}
+
+.add-item-btn .plus-icon {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+.add-item-btn::after {
+    content: '添加新条目';
+    font-size: 1em;
+}
+
+.add-item-form.is-editing .add-item-btn::after {
+    display: none;
 }
 
 .add-item-input {
@@ -107,7 +124,7 @@ body {
     padding: 10px 15px;
     border: 2px solid #00aaff;
 
-    transition: all 0.4s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 /* 按钮收缩成圆形 */
@@ -115,9 +132,15 @@ body {
     width: 44px;
     border-radius: 50%;
     border-style: solid;
-    background-color: #00aaff;
+    background-color: #4A5568; /* 一个冷静的、带蓝调的灰色 */
+    color: #E2E8F0; /* 配套使用一个柔和的亮灰色文字 */
+    padding: 0;
 
     color: white;
+}
+
+.add-item-form.is-editing .add-item-btn .plus-icon {
+    margin-right: 0; /* 居中时不需要外边距 */
 }
 
 .longterm::before, .shortterm::before, .thoughts::before, .completed::before {
@@ -182,7 +205,7 @@ body {
 
 .container.focused-mode {
     display:block;
-    padding:0;
+    padding:15vh 15vw;
 }
 
 .container.focused-mode .longterm,
@@ -193,11 +216,19 @@ body {
 }
 
 .container.focused-mode .is-focused {
-    display: block;
+    display: flex; 
+    flex-direction: column; 
     width: 100%;
-    height: 100vh;
-    border-radius: 0;
-    gap: 0;
+    height: 100%;
+    
+    /*视觉美化*/
+    background-color: rgba(35, 37, 38, 0.8); /* 半透明的背景 */
+    backdrop-filter: blur(20px); /* 毛玻璃效果，让背景更模糊 */
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 12px; 
+    padding: 30px; 
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+
 }
 
 .content-list {
