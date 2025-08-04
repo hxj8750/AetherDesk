@@ -101,26 +101,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const quadrantKey = quad.classList[0];
 
-        // 只为非已完成内容框添加完成功能
-        if (quadrantKey !== 'completed') {
+        
+        if (true) { //懒得删除这个条件判断了
             contentList.addEventListener('mousedown',(event)=> {
                 // 只响应鼠标左建点击
                 if (event.button !== 0) {
                     return;
                 }
 
-                // 找到被点击的条目
-                const clickedItem = event.target.closest('.goal-item');
-                if (!clickedItem) {
-                    return;
+                if (!container.classList.contains('focused-mode')) { // 如果不是聚焦模式 单击视为完成
+                    // 只为非已完成内容框添加完成功能
+                    if (quadrantKey !== 'completed') {
+                        // 找到被点击的条目
+                        const clickedItem = event.target.closest('.goal-item');
+                        if (!clickedItem) {
+                            return;
+                        }
+
+                        // 从data-index获取其在数组中的索引
+                        const itemIndex = parseInt(clickedItem.dataset.index, 10);
+
+                        if (isNaN(itemIndex)) return; // 索引为空则返回
+
+                        completeItem(quadrantKey,itemIndex,clickedItem);
+                    }
                 }
-
-                // 从data-index获取其在数组中的索引
-                const itemIndex = parseInt(clickedItem.dataset.index, 10);
-
-                if (isNaN(itemIndex)) return; // 索引为空则返回
-
-                completeItem(quadrantKey,itemIndex,clickedItem);
             })
         }
 
@@ -177,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
             // a. 数据操作：从原数组中移除，并添加到 'completed' 数组
             const itemText = appData[sourceKey].splice(itemIndex, 1)[0];
-            appData.completed.push(itemText);
+            appData.completed.unshift(itemText);
             
             // b. 持久化：将更新后的 appData 保存到 localStorage
             saveData();
