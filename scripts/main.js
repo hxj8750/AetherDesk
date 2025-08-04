@@ -101,6 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const quadrantKey = quad.classList[0];
 
+        let deleteTimer = null; //跟踪取消定时器
+
         
         if (true) { //懒得删除这个条件判断了
             contentList.addEventListener('mousedown',(event)=> {
@@ -125,8 +127,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         completeItem(quadrantKey,itemIndex,clickedItem);
                     }
+                } else {
+                    const clickedItem = event.target.closest('.goal-item');
+                    if (!clickedItem) {
+                        return;
+                    }
+                    
+                    // 检查是否处于待删除状态
+                    if (clickedItem.classList.contains('is-deleting')) {
+                        // 第二次点击 确认删除
+
+                        clearTimeout(deleteTimer); //清除定时器
+
+                        const itemIndex = parseInt(clickedItem.dataset.index, 10);
+
+                        clickedItem.classList.remove('is-deleting'); //移除血条动画
+                        clickedItem.classList.add('is-disappearing'); //消失动画
+
+                        clickedItem.addEventListener('animationend',()=>{ // 动画结束后才删除数据
+                            if (!isNaN(itemIndex)) {
+                                deleteItem(quadrantKey, itemIndex, clickedItem);
+                            }
+
+                        })
+                    } else {
+                        // 第一次点击 进入待删除状态
+                        // 先取消其它条目的待删除状态
+                        contentList.querySelectorAll('.is-deleting').forEach(item => {
+                            item.classList.remove('is-deleting');
+                        });       
+                        
+                        clearTimeout(deleteTimer); //清除旧的定时器
+
+                        // 触发晃动和血条动画
+                        clickedItem.classList.add('is-deleting');
+
+                        // 启动2秒定时器 不操作则恢复
+                        deleteTimer = setTimeout(() => {
+                            clickedItem.classList.remove('is-deleting');
+                        }, 2000);
+                    }    
                 }
-            })
+    })
         }
 
 
@@ -191,5 +233,23 @@ document.addEventListener('DOMContentLoaded', () => {
             renderAll();
     
         }, { once: true }); // { once: true } 确保此事件只触发一次
+    }
+
+    function deleteItem(sourceKey, itemIndex, itemElement) {
+        // 1. 触发最终的消除动画 (我们可以复用 is-disappearing)
+        itemElement.classList.add('is-disappearing');
+    
+        // 2. 监听动画结束
+        itemElement.addEventListener('animationend', () => {
+            // a. 数据操作：从 appData 对应的数组中移除
+            appData[sourceKey].splice(itemIndex, 1);
+            
+            // b. 持久化
+            saveData();
+    
+            // c. 重新渲染所有象限来更新UI和索引
+            renderAll();
+            
+        }, { once: true });
     }
 });
