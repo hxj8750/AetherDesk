@@ -24,7 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let clickTimeout = null; // 用一个变量来存储定时器
         let clickCount = 0;   // 记录点击次数
     
-        quad.addEventListener('click', () => {
+        quad.addEventListener('click', (event) => {
+            if (event.target !== quad) {
+                return;
+            }
+
             clickCount++; // 每次点击，计数器加1
     
             if (clickCount === 1) {
@@ -95,6 +99,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
 
+        const quadrantKey = quad.classList[0];
+
+        // 只为非已完成内容框添加完成功能
+        if (quadrantKey !== 'completed') {
+            contentList.addEventListener('mousedown',(event)=> {
+                // 只响应鼠标左建点击
+                if (event.button !== 0) {
+                    return;
+                }
+
+                // 找到被点击的条目
+                const clickedItem = event.target.closest('.goal-item');
+                if (!clickedItem) {
+                    return;
+                }
+
+                // 从data-index获取其在数组中的索引
+                const itemIndex = parseInt(clickedItem.dataset.index, 10);
+
+                if (isNaN(itemIndex)) return; // 索引为空则返回
+
+                completeItem(quadrantKey,itemIndex,clickedItem);
+            })
+        }
 
 
     });
@@ -113,18 +141,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderQuadrant(quad) { //专门渲染一个内容框内的元素
-        const quarantKey = quad.classList[0]; //获取该框名称
+        const qudrantKey = quad.classList[0]; //获取该框名称
         const contentList = quad.querySelector('.content-list');
-        const items = appData[quarantKey]; //获取该框对应数据
+        const items = appData[qudrantKey]; //获取该框对应数据
 
         // 清空当前列表，防止重复渲染
         contentList.innerHTML = '';
 
         // 为每一条数据添加HTML元素
-        items.forEach(text=>{
+        items.forEach((text,index)=>{
             const newItem = document.createElement('div');
             newItem.classList.add('goal-item'); // 一个事先设置好的样式
             newItem.textContent = text;
+
+            newItem.dataset.index = index; 
+
             contentList.appendChild(newItem);
         });
     }
@@ -134,5 +165,26 @@ document.addEventListener('DOMContentLoaded', () => {
             renderQuadrant(quad);
         });
 
+    }
+
+    function completeItem(sourceKey, itemIndex, itemElement) {
+        // 1. 为被点击的元素添加一个“正在消失”的动画类
+        itemElement.classList.add('is-disappearing');
+    
+        // 2. 监听这个动画的结束事件
+        itemElement.addEventListener('animationend', () => {
+            // --- 动画播放完毕后，执行以下操作 ---
+    
+            // a. 数据操作：从原数组中移除，并添加到 'completed' 数组
+            const itemText = appData[sourceKey].splice(itemIndex, 1)[0];
+            appData.completed.push(itemText);
+            
+            // b. 持久化：将更新后的 appData 保存到 localStorage
+            saveData();
+    
+            // c. 重新渲染所有象限，以确保界面与数据完全同步
+            renderAll();
+    
+        }, { once: true }); // { once: true } 确保此事件只触发一次
     }
 });

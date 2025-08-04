@@ -282,3 +282,41 @@ body {
     border-color: #00aaff;
     /* 可以在中间再加一个对勾图标 */
 }
+
+.completed .goal-item {
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: line-through;
+    cursor: default; /* 已完成的条目不可再交互 */
+}
+
+.completed .goal-item:hover {
+    background-color: transparent; /* 取消悬停效果 */
+}
+
+/* “已完成”状态的复选框样式 */
+.completed .goal-item::before {
+    background-color: #4CAF50; /* 填充为绿色 */
+    border-color: #4CAF50;
+    content: '✓'; /* 显示对勾 */
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 18px; /* 垂直居中对勾 */
+}
+
+/* 消除动画 */
+.goal-item.is-disappearing {
+    animation: fade-out 0.4s ease-out forwards;
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+}
